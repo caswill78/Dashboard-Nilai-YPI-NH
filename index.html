@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
+       
         /* ============================================
        SECTION 1: GLOBAL STYLES & RESET
        ============================================ */
@@ -361,11 +362,11 @@
 
     <!-- 1. BACKGROUND IMAGE (FIXED & FULLSCREEN) -->
     <!-- Ganti URL gambar di bawah ini dengan foto sekolah Anda -->
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
-        style="background-image: url('GEDUNG MA PLUS.jpg');">
-        <!-- Overlay Gradasi Gelap (Supaya tulisan login terbaca jelas di atas foto) -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-slate-900/30"></div>
-    </div>
+    <div class="fixed inset-0 bg-cover bg-center bg-no-repeat -z-10" 
+     style="background-image: url('GEDUNG MA PLUS.png');">
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-slate-900/30"></div>
+</div>
 
     <!-- 2. CARD LOGIN (GLASS EFFECT) -->
     <div class="relative z-10 w-full max-w-[360px] px-4">
@@ -375,12 +376,12 @@
             <div
                 class="w-24 h-24 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl border-2 border-white/30 p-1 ring-4 ring-black/10">
                 <!-- LOGO SEKOLAH -->
-                <img src="logo-ypi.png" alt="Logo"
-                    class="w-full h-full object-cover rounded-full bg-white">
+                <img src="logo-ypi.png" alt="Logo" class="w-full h-full object-cover rounded-full bg-white">
             </div>
             <h1 class="text-2xl font-bold text-white drop-shadow-md tracking-tight">Sistem Sekolah Terpadu</h1>
             <div class="inline-block bg-blue-600/80 backdrop-blur px-3 py-0.5 rounded-full mt-1">
-                <p class="text-white text-[10px] font-bold tracking-widest uppercase">Yayasan Perguruan Islam Nurul Hadina</p>
+                <p class="text-white text-[10px] font-bold tracking-widest uppercase">Yayasan Perguruan Islam Nurul
+                    Hadina</p>
             </div>
         </div>
 
@@ -425,19 +426,17 @@
             </div>
         </div>
         <div class="text-center mt-6">
-            <p class="text-[10px] text-white/40 font-light">&copy; 2025 Aplikasi Trial v.1<br>Akses Login Oleh Admin : <strong>Fauzan Reza, S.T</strong></p>
+            <p class="text-[10px] text-white/40 font-light">&copy; 2025 Aplikasi Trial v.1<br>Akses Login Oleh Admin :
+                <strong>Fauzan Reza, S.T</strong>
+            </p>
         </div>
     </div>
 </div>
 
-<body class="pb-24" x-data="appSystem()" x-init="init()">
-    <div x-show="isLoggedIn" x-transition.opacity.duration.500ms>
-
-        <!-- ... (Semua kode HTML Header, Nav, Main, Modal Anda yang lama ada di sini) ... -->
-        <header> ... </header>
-        <div class="nav"> ... </div>
-        <main> ... </main>
-        <div class="modals"> ... </div>
+<body class="pb-24 opacity-0 transition-opacity duration-500" 
+      x-data="appSystem()" 
+      x-init="init()"
+      onload="document.body.classList.remove('opacity-0')">
 
     </div>
 
@@ -1258,9 +1257,9 @@
                     const p = this.loginForm.password.trim();
 
                     // Cek Kredensial (Hardcoded)
-                    if (u === 'gurusmp' && p === 'smpnh123') {
+                    if (u === 'Gurusmp' && p === 'smpnh123') {
                         this.loginSuccess('Guru SMP');
-                    } else if (u === 'gurusma' && p === 'smanh123') {
+                    } else if (u === 'Gurusma' && p === 'smanh123') {
                         this.loginSuccess('Guru SMA');
                     } else {
                         // Gagal
