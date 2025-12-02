@@ -352,8 +352,94 @@
         }
     </style>
 </head>
+<!-- LAYAR LOGIN (Hanya muncul jika !isLoggedIn) -->
+<!-- ============================================
+       LOGIN OVERLAY (MOBILE RESPONSIVE & GLASS)
+       ============================================ -->
+<div x-show="!isLoggedIn"
+    class="fixed inset-0 z-[9999] flex items-center justify-center transition-opacity duration-500" x-cloak>
+
+    <!-- 1. BACKGROUND IMAGE (FIXED & FULLSCREEN) -->
+    <!-- Ganti URL gambar di bawah ini dengan foto sekolah Anda -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
+        style="background-image: url('GEDUNG MA PLUS.jpg');">
+        <!-- Overlay Gradasi Gelap (Supaya tulisan login terbaca jelas di atas foto) -->
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/50 to-slate-900/30"></div>
+    </div>
+
+    <!-- 2. CARD LOGIN (GLASS EFFECT) -->
+    <div class="relative z-10 w-full max-w-[360px] px-4">
+
+        <!-- Logo & Judul (Di luar kotak agar background lebih terekspos) -->
+        <div class="text-center mb-6">
+            <div
+                class="w-24 h-24 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl border-2 border-white/30 p-1 ring-4 ring-black/10">
+                <!-- LOGO SEKOLAH -->
+                <img src="logo-ypi.png" alt="Logo"
+                    class="w-full h-full object-cover rounded-full bg-white">
+            </div>
+            <h1 class="text-2xl font-bold text-white drop-shadow-md tracking-tight">Sistem Sekolah Terpadu</h1>
+            <div class="inline-block bg-blue-600/80 backdrop-blur px-3 py-0.5 rounded-full mt-1">
+                <p class="text-white text-[10px] font-bold tracking-widest uppercase">Yayasan Perguruan Islam Nurul Hadina</p>
+            </div>
+        </div>
+
+        <!-- Form Container (Kaca Transparan) -->
+        <div
+            class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-6 overflow-hidden relative">
+            <!-- Efek Kilauan -->
+            <div class="absolute -top-10 -right-10 w-20 h-20 bg-blue-500/30 rounded-full blur-xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-20 h-20 bg-purple-500/30 rounded-full blur-xl"></div>
+
+            <!-- Alert Error -->
+            <div x-show="loginError" x-transition
+                class="mb-4 bg-red-500/20 backdrop-blur border border-red-500/50 text-white text-xs p-3 rounded-xl text-center flex items-center justify-center gap-2">
+                <span>⚠️</span> Username/Password Salah!
+            </div>
+
+            <div class="space-y-4 relative z-10">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-blue-100 uppercase ml-2">Username</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-white/70">👤</span>
+                        <input type="text" x-model="loginForm.username" @keyup.enter="doLogin"
+                            class="w-full pl-10 p-3 bg-black/20 border border-white/10 rounded-xl text-white placeholder-white/40 focus:bg-black/40 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none text-sm transition-all"
+                            placeholder="Username">
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-blue-100 uppercase ml-2">Password</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-white/70">🔑</span>
+                        <input type="password" x-model="loginForm.password" @keyup.enter="doLogin"
+                            class="w-full pl-10 p-3 bg-black/20 border border-white/10 rounded-xl text-white placeholder-white/40 focus:bg-black/40 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none text-sm transition-all"
+                            placeholder="Password">
+                    </div>
+                </div>
+
+                <button @click="doLogin"
+                    class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-blue-900/50 active:scale-95 transition-all mt-2 border border-white/10">
+                    MASUK APLIKASI
+                </button>
+            </div>
+        </div>
+        <div class="text-center mt-6">
+            <p class="text-[10px] text-white/40 font-light">&copy; 2025 Aplikasi Trial v.1<br>Akses Login Oleh Admin : <strong>Fauzan Reza, S.T</strong></p>
+        </div>
+    </div>
+</div>
 
 <body class="pb-24" x-data="appSystem()" x-init="init()">
+    <div x-show="isLoggedIn" x-transition.opacity.duration.500ms>
+
+        <!-- ... (Semua kode HTML Header, Nav, Main, Modal Anda yang lama ada di sini) ... -->
+        <header> ... </header>
+        <div class="nav"> ... </div>
+        <main> ... </main>
+        <div class="modals"> ... </div>
+
+    </div>
 
     <!-- ============================================
        HEADER & NAVIGATION
@@ -363,10 +449,16 @@
             <div class="flex justify-between items-center">
                 <div>
                     <h1 class="text-lg font-bold leading-none">Sistem Sekolah Terpadu v.1</h1>
-                    <p class="text-[10px] text-blue-200 opacity-90">Yayasan Perguruan Islam  Nurul Hadina</p><p class="text-[10px] text-blue-200 opacity-90">Presented by : Fauzan Reza, S.T</p>
+                    <p class="text-[10px] text-blue-200 opacity-90">Yayasan Perguruan Islam Nurul Hadina</p>
+                    <p class="text-[10px] text-blue-200 opacity-90">Presented by : Fauzan Reza, S.T</p>
                 </div>
                 <div class="flex items-center gap-2">
                     <!-- Status Sync Indicator -->
+                    <!-- Tombol Logout -->
+                    <button @click="logout"
+                        class="ml-2 bg-red-500/20 hover:bg-red-500 text-white border border-red-400/50 px-3 py-1 rounded text-[10px] transition">
+                        🔓 Logout
+                    </button>
                     <div x-show="syncStatus !== 'idle'" class="flex items-center gap-1 text-xs">
                         <div class="w-2 h-2 rounded-full animate-pulse"
                             :class="syncStatus === 'syncing' ? 'bg-yellow-400' : 'bg-green-400'"></div>
@@ -1081,6 +1173,13 @@
                 currentTab: 'nilai',
                 masterSubTab: 'guru',
 
+                // --- LOGIN STATE BARU ---
+                isLoggedIn: false,      // Default: terkunci
+                userRole: '',           // Menyimpan role (SMP/SMA)
+                loginForm: { username: '', password: '' },
+                loginError: false,
+                // -----------------------
+
                 // DATABASE
                 db: {
                     guru: [],
@@ -1137,6 +1236,13 @@
                 // INIT
                 // ===================================
                 init() {
+                    // --- CEK SESSION LOGIN ---
+                    const sessionRole = sessionStorage.getItem('sekolah_session_role');
+                    if (sessionRole) {
+                        this.isLoggedIn = true;
+                        this.userRole = sessionRole;
+                    }
+                    // -------------------------
                     this.loadFromStorage();
 
                     // Auto Sync jika enabled
@@ -1146,7 +1252,41 @@
                         }, 1000);
                     }
                 },
+                // --- FUNGSI LOGIN BARU ---
+                doLogin() {
+                    const u = this.loginForm.username.trim();
+                    const p = this.loginForm.password.trim();
 
+                    // Cek Kredensial (Hardcoded)
+                    if (u === 'gurusmp' && p === 'smpnh123') {
+                        this.loginSuccess('Guru SMP');
+                    } else if (u === 'gurusma' && p === 'smanh123') {
+                        this.loginSuccess('Guru SMA');
+                    } else {
+                        // Gagal
+                        this.loginError = true;
+                        this.loginForm.password = '';
+                        setTimeout(() => this.loginError = false, 3000);
+                    }
+                },
+
+                loginSuccess(role) {
+                    this.isLoggedIn = true;
+                    this.userRole = role;
+                    this.loginError = false;
+                    sessionStorage.setItem('sekolah_session_role', role); // Simpan sesi
+                },
+
+                logout() {
+                    if (confirm('Yakin ingin keluar?')) {
+                        this.isLoggedIn = false;
+                        this.userRole = '';
+                        this.loginForm = { username: '', password: '' };
+                        sessionStorage.removeItem('sekolah_session_role');
+                        location.reload(); // Refresh agar bersih
+                    }
+                },
+                // -------------------------
                 // ===================================
                 // COMPUTED PROPERTIES
                 // ===================================
@@ -1621,6 +1761,5 @@
         }
     </script>
 </body>
-
 
 </html>
